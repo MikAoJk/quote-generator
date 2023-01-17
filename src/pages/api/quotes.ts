@@ -14,11 +14,8 @@ export default async function handler(
 ) {
 
   if (process.env.NODE_ENV == 'production') {
-
-    //Find the absolute path of the json directory
-    const jsonDirectory = path.join(process.cwd(), '/src/json');
     //Read the json data file data.json
-    const json = await fs.readFile(jsonDirectory + '/data.json', 'utf8');
+    const json = await fs.readFile('/data.json', 'utf8');
 
     const quotes: Array<Quote> = JSON.parse(json);
 
