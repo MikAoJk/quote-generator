@@ -13,7 +13,7 @@ export default async function handler(
     res: NextApiResponse<Array<Quote>>
 ) {
 
-  if (process.env.NODE_ENV == 'production') {
+  if (process.env.NODE_ENV === 'production') {
     //Read the json data file data.json
     const json = await fs.readFile('/data.json', 'utf8');
 
