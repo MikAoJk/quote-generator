@@ -13,6 +13,7 @@ export default async function handler(
     res: NextApiResponse<Array<Quote>>
 ) {
 
+  /*
   if (process.env.NODE_ENV === 'production') {
     const jsonDirectory = path.join(process.cwd(), 'public');
     const json = await fs.readFile(jsonDirectory + '/data.json', 'utf8');
@@ -21,6 +22,7 @@ export default async function handler(
 
     res.status(200).json(quotes);
   }
+   */
 
   const result = await fetch(`https://type.fit/api/quotes`, {
     method: req.method
