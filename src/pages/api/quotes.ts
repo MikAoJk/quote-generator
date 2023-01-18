@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import path from 'path';
 import { promises as fs } from 'fs';
 
-type Quote = {
+export type Quote = {
   text: string
   author: string | null
 }
@@ -14,14 +14,12 @@ export default async function handler(
 ) {
 
   if (process.env.NODE_ENV === 'production') {
-    //Read the json data file data.json
-    const json = await fs.readFile('/data.json', 'utf8');
+    const jsonDirectory = path.join(process.cwd(), 'public');
+    const json = await fs.readFile(jsonDirectory + '/data.json', 'utf8');
 
     const quotes: Array<Quote> = JSON.parse(json);
 
-
     res.status(200).json(quotes);
-    return;
   }
 
   const result = await fetch(`https://type.fit/api/quotes`, {

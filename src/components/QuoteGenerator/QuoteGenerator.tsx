@@ -1,12 +1,13 @@
-import styles from "./Quote.module.css";
+import styles from "./QuoteGenerator.module.css";
 
 import {useEffect, useState} from "react";
+import {Quote} from "@/pages/api/quotes";
 
 const QUOTES_URL = `/api/quotes`;
-const Quote = () => {
+const QuoteGenerator = () => {
 
     const [quotes, setQuotes] = useState([]);
-    const [quoteData, setQuoteData] = useState<QuoteData>();
+    const [quoteData, setQuoteData] = useState<Quote>();
 
     useEffect(() => {
         fetchData()
@@ -34,27 +35,25 @@ const Quote = () => {
     return (
         <div className={styles.main}>
             <h1>Quote Generator</h1>
-            <section>
-                <button onClick={getNewQuote}>New Quote</button>
-                <h3>
-                    <span>“</span>
-                    {quoteData?.text}
-                </h3>
-                <i>- {quoteData?.author}</i>
-            </section>
+            { (quoteData?.text) &&
+                <section>
+                    <button onClick={getNewQuote}>New Quote</button>
+                    <h3>
+                        <span>“</span>
+                        {quoteData?.text}
+                    </h3>
+                    <i>- {quoteData?.author}</i>
+                </section>
+            }
         </div>
     )
-}
-
-export type QuoteData = {
-    text: string
-    author: string | null
 }
 
 async function fetchData(): Promise<any> {
     const response = await fetch(QUOTES_URL, {
         method: 'GET'
     });
+
     if (!response.ok) {
         throw new Error(`Httpstatus code is ${response.status}`);
     }
@@ -62,4 +61,4 @@ async function fetchData(): Promise<any> {
     return await response.json();
 }
 
-export default Quote;
+export default QuoteGenerator;

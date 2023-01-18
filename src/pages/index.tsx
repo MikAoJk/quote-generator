@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import {NextPage} from "next";
-import Quote from "@/components/Quote/Quote";
+import QuoteGenerator from "@/components/QuoteGenerator/QuoteGenerator";
 
 
 const Home: NextPage = () => {
@@ -13,7 +13,7 @@ const Home: NextPage = () => {
             </Head>
 
             <main>
-                <Quote/>
+                <QuoteGenerator/>
             </main>
         </div>
     )
