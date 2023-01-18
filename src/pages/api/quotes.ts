@@ -1,32 +1,30 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type {NextApiRequest, NextApiResponse} from 'next'
 import path from 'path';
-import { promises as fs } from 'fs';
+import {promises as fs} from 'fs';
 
 export type Quote = {
-  text: string
-  author: string | null
+    text: string
+    author: string | null
 }
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Array<Quote>>
 ) {
+    if (process.env.NODE_ENV !== 'production') {
+        const jsonDirectory = path.join(process.cwd(), 'src/json');
+        const json = await fs.readFile(jsonDirectory + '/data.json', 'utf8');
 
-  /*
-  if (process.env.NODE_ENV === 'production') {
-    const jsonDirectory = path.join(process.cwd(), 'public');
-    const json = await fs.readFile(jsonDirectory + '/data.json', 'utf8');
+        const quotes: Array<Quote> = JSON.parse(json);
 
-    const quotes: Array<Quote> = JSON.parse(json);
+        res.status(200).json(quotes);
+    } else {
 
-    res.status(200).json(quotes);
-  }
-   */
+        const result = await fetch(`https://type.fit/api/quotes`, {
+            method: req.method
+        })
 
-  const result = await fetch(`https://type.fit/api/quotes`, {
-    method: req.method
-  })
-
-  res.status(result.status).json(await result.json());
+        res.status(result.status).json(await result.json());
+    }
 }

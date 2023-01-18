@@ -35,7 +35,7 @@ const QuoteGenerator = () => {
     return (
         <div className={styles.main}>
             <h1>Quote Generator</h1>
-            { (quoteData?.text) &&
+            {(quoteData?.text) &&
                 <section>
                     <button onClick={getNewQuote}>New Quote</button>
                     <h3>
@@ -50,15 +50,22 @@ const QuoteGenerator = () => {
 }
 
 async function fetchData(): Promise<any> {
-    const response = await fetch(QUOTES_URL, {
-        method: 'GET'
-    });
+    if (process.env.NODE_ENV === 'production') {
+        // Need this in production due to using next export, in GitHub pages
+        // The API Routes are not supported using next export
+        return fetch("https://type.fit/api/quotes")
+            .then((res) => res.json());
+    } else {
+        const response = await fetch(QUOTES_URL, {
+            method: 'GET'
+        });
 
-    if (!response.ok) {
-        throw new Error(`Httpstatus code is ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`Httpstatus code is ${response.status}`);
+        }
+
+        return await response.json();
     }
-
-    return await response.json();
 }
 
 export default QuoteGenerator;
