@@ -61,7 +61,7 @@ async function fetchData(): Promise<any> {
         });
 
         if (!response.ok) {
-            throw new Error(`Httpstatus code is ${response.status}`);
+            throw new Error(`Http status code is ${response.status}`);
         }
 
         return await response.json();
